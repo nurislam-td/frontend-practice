@@ -77,8 +77,12 @@ function setupResponseInterceptors(api: AxiosInstance) {
         const { data } = await axios.post<JwtResponse>(`${API_URL}/api/auth`, {
           refresh_token,
         });
+
         localStorage.setItem("access_token", data.access_token); // TODO use runtime memory (store or etc.)
         localStorage.setItem("refresh_token", data.refresh_token); // TODO use HTTP-ONLY cookies
+        originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
+        api.request(originalRequest);
+        processQueue(null, data.access_token);
       } catch {
         processQueue(error, null);
         localStorage.removeItem("access_token");
