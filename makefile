@@ -1,4 +1,4 @@
-.PHONY: json
+.PHONY: json dev
 
 
 json:
