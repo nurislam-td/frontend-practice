@@ -1,5 +1,5 @@
 import { api } from "@/shared/lib/api/http";
-import type { CreatePost, Post } from "../types/std";
+import type { CreatePost, Post } from "@/features/posts/types/std";
 
 export const postApi = {
   async getPosts(): Promise<Post[]> {

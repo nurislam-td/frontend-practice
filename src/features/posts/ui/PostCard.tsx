@@ -1,4 +1,4 @@
-import type { Post } from "../types/std";
+import type { Post } from "@/features/posts/types/std";
 import { Card, Group, Text, Image, Avatar } from "@mantine/core";
 
 export function PostCard({ post }: { post: Post }) {

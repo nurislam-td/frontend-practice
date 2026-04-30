@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import type { Post } from "../types/std";
+import type { Post } from "@/features/posts/types/std";
 import { postApi } from "@/features/posts/api/postApi";
 
 export function usePost(): {
