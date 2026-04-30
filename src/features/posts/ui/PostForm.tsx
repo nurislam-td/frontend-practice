@@ -1,33 +1,25 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Stack, TextInput } from "@mantine/core";
 
 import {
   postSchema,
   type PostSchemaValues,
 } from "@/features/posts/types/schema";
-import { Button, Stack, TextInput } from "@mantine/core";
 
-export const PostForm = () => {
-  const onSubmit: SubmitHandler<PostSchemaValues> = async (
-    data: PostSchemaValues,
-  ) => {
-    repo.createPost(data);
-  };
+type Props = {
+  onSubmit: SubmitHandler<PostSchemaValues>;
+  defaultValues: PostSchemaValues;
+};
 
+export const PostForm = ({ onSubmit, defaultValues }: Props) => {
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<PostSchemaValues>({
     resolver: zodResolver(postSchema),
-    defaultValues: {
-      author: "",
-      avatar: "",
-      content: "",
-      image: "",
-      title: "",
-    },
+    defaultValues,
     criteriaMode: "all",
   });
   return (
@@ -67,7 +59,7 @@ export const PostForm = () => {
           error={errors.image?.message}
         />
         <Button type="submit" loading={isSubmitting}>
-          Create Post
+          Submit
         </Button>
       </Stack>
     </form>
