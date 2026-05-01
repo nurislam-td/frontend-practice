@@ -21,7 +21,9 @@ export const CreatePost = () => {
   };
   return (
     <>
-      <Button onClick={open}>Create Post</Button>
+      <Button onClick={open} w="45%">
+        Create Post
+      </Button>
       <Modal opened={opened} onClose={close} title="Create Post">
         <PostForm onSubmit={onSubmit} defaultValues={defaultValues} />
       </Modal>

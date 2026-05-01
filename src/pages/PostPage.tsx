@@ -1,14 +1,18 @@
 import { CreatePost } from "@/features/posts/ui/CreatePost";
 import { PostList } from "@/features/posts/ui/PostList";
-import { Container, SimpleGrid } from "@mantine/core";
+import { Container, Group, SimpleGrid, Stack } from "@mantine/core";
 
 export function PostPage() {
   return (
-    <Container size="lg" py="xl">
-      <SimpleGrid cols={{ base: 1 }}>
-        <CreatePost />
-        <PostList />
-      </SimpleGrid>
+    <Container size="md" py="xl">
+      <Stack>
+        <Group justify="center">
+          <CreatePost />
+        </Group>
+        <SimpleGrid cols={{ base: 3 }}>
+          <PostList />
+        </SimpleGrid>
+      </Stack>
     </Container>
   );
 }
