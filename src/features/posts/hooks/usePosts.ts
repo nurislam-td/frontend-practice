@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { Post } from "@/features/posts/types/std";
 import { postApi } from "@/features/posts/api/postApi";
@@ -22,6 +22,8 @@ export function usePost(): {
   return { posts, isLoading, error };
 }
 
+const POSTS_QUERY_KEY = ["posts"];
+
 export function usePostQueryTs(): {
   posts: Post[];
   isLoading: boolean;
@@ -32,7 +34,7 @@ export function usePostQueryTs(): {
     isLoading,
     error,
   } = useQuery<Post[], Error>({
-    queryKey: ["posts"],
+    queryKey: POSTS_QUERY_KEY,
     queryFn: () => postApi.getPosts(),
   });
 
@@ -40,5 +42,23 @@ export function usePostQueryTs(): {
 }
 
 export const usePostCreate = () => {
-  pass;
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: postApi.createPost,
+    onMutate: (variables) => {
+      console.log("Before request sended");
+      console.log("Variables", variables);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: POSTS_QUERY_KEY });
+      console.log("Successful creation post and posts cache invalidation");
+    },
+    onError: (error, variables) => {
+      console.log("Error while create post", error);
+      console.log("Variables: ", variables);
+    },
+    onSettled: () => {
+      console.log("finally block of request ");
+    },
+  });
 };

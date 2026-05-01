@@ -76,7 +76,7 @@ function setupResponseInterceptors(api: AxiosInstance) {
         const refresh_token = localStorage.getItem("refresh_token");
         const { data } = await axios.post<JwtResponse>(`${API_URL}/api/auth`, {
           refresh_token,
-        });
+        }); // TODO withCredentials : true
 
         localStorage.setItem("access_token", data.access_token); // TODO use runtime memory (store or etc.)
         localStorage.setItem("refresh_token", data.refresh_token); // TODO use HTTP-ONLY cookies
