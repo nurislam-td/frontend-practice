@@ -20,7 +20,7 @@ async def login(login: LoginSchema, handler: Depends[LoginHandler]) -> JwtDTO:
     return jwt
 
 
-@router.post("/signup")
+@router.post("/signup", status_code=201)
 @inject
 async def signup(
     signup: SignUpSchema, handler: Depends[SignUpHandler]
