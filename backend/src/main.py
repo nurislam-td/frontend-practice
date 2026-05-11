@@ -1,8 +1,8 @@
 from auth.api import router as auth_api
-from auth.infrastructure.di.ioc import get_ioc
 from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from setup.di.ioc import get_ioc
 
 app = FastAPI()
 app.include_router(auth_api)

@@ -4,8 +4,8 @@ from dishka import AsyncContainer, make_async_container
 from settings import Settings, get_settings
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
-from auth.infrastructure.db import get_async_sessionmaker
-from auth.infrastructure.di.provider import AppProvider
+from setup.db import get_async_sessionmaker
+from setup.di.provider import AppProvider
 
 lru_cache(maxsize=1)
 

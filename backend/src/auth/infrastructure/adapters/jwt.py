@@ -1,15 +1,16 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
 import jwt
 
-from auth.application.dto.jwt import JwtDTO
+from auth.application.dto.jwt import JwtDTO, UserPayload
+from auth.application.ports import IJwtService
 
 
 @dataclass(slots=True)
-class JwtService:
+class JwtService(IJwtService):
     jwt_alg: str
     access_private_path: Path
     access_public_path: Path
@@ -62,3 +63,6 @@ class JwtService:
         )
 
     async def get_by_user_id(self, user_id: int) -> JwtDTO: ...
+
+    def create_user_tokens(self, payload: UserPayload) -> JwtDTO:
+        return self.create_pair(asdict(payload))

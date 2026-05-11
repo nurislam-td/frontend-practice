@@ -4,7 +4,7 @@ from dishka.integrations.fastapi import inject
 from fastapi import APIRouter
 from pydantic import EmailStr
 
-from auth.api.schemas import LoginSchema, SignUpSchema, UserCreatedSchema
+from auth.api.schemas import LoginSchema, SignUpSchema
 from auth.application.dto.jwt import JwtDTO
 from auth.application.dto.user import CreateUserDTO
 from auth.application.login import LoginHandler
@@ -22,11 +22,8 @@ async def login(login: LoginSchema, handler: Depends[LoginHandler]) -> JwtDTO:
 
 @router.post("/signup", status_code=201)
 @inject
-async def signup(
-    signup: SignUpSchema, handler: Depends[SignUpHandler]
-) -> UserCreatedSchema:
+async def signup(signup: SignUpSchema, handler: Depends[SignUpHandler]) -> JwtDTO:
     dto = get_converter(
         SignUpSchema, CreateUserDTO, recipe=[coercer(EmailStr, str, func=str)]
     )(signup)
-    user_id = await handler.call(dto)
-    return UserCreatedSchema(user_id=user_id)
+    return await handler.call(dto)
