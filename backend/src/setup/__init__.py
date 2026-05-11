@@ -1,5 +1,4 @@
-import db
-import di
+from . import db, di
 
 __all__ = (
     "db",

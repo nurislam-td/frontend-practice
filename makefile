@@ -13,10 +13,10 @@ back:
 
 # make migrations m='name'
 migrations:
-	cd backend/src && uv run alembic revision --autogenerate -m $(m)
+	cd backend/src && uv run alembic -c setup/db/alembic.ini revision --autogenerate -m $(m)
 
 migrate: 
-	cd backend/src && uv run alembic upgrade head 
+	cd backend/src && uv run alembic -c setup/db/alembic.ini upgrade head 
 
 downgrade: 
-	cd backend/src && uv run alembic downgrade head -1
+	cd backend/src && uv run alembic -c setup/db/alembic.ini downgrade head -1
