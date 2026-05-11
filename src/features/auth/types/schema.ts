@@ -13,7 +13,7 @@ export const signupSchema = z
     first_name: z.string().max(12),
     last_name: z.string().max(12),
     gender: z.enum(["male", "female", "other"]),
-    age: z.number().optional(),
+    age: z.number().max(120).optional(),
 
     confirmPassword: z.string(),
   })
