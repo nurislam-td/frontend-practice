@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from adaptix.conversion import coercer, get_converter
 from dishka.integrations.fastapi import FromDishka as Depends
 from dishka.integrations.fastapi import inject

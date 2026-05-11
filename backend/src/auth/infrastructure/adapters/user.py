@@ -18,6 +18,16 @@ class UserService(IUserService):
         u = (await self.session.execute(q)).scalar_one()
         return get_converter(User, UserDTO)(u)
 
+    async def get_user_by_id(self, user_id: int) -> UserDTO:
+        q = select(User).where(User.id == user_id)
+        u = (await self.session.execute(q)).scalar_one()
+        return get_converter(User, UserDTO)(u)
+
+    async def get_maybe_user_by_id(self, user_id: int) -> UserDTO | None:
+        q = select(User).where(User.id == user_id)
+        u = (await self.session.execute(q)).scalar_one_or_none()
+        return get_converter(User, UserDTO)(u) if u else u
+
     async def check_user_email_exists(self, email: str) -> bool:
         q = select(User.id).where(User.email == email)
         u = await self.session.scalar(q)
