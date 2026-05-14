@@ -1,14 +1,15 @@
 from typing import Annotated
+from uuid import uuid4
 
 from auth.api.depends import validate_token
 from auth.application.dto.user import UserDTO
 from dishka.integrations.fastapi import FromDishka as FromDI
 from dishka.integrations.fastapi import inject
-from fastapi import APIRouter, Depends, Form, Query
+from fastapi import APIRouter, Depends, Form
 
 from posts.api.schema import CreatePostForm
 from posts.application.create_post import CreatePostHandler
-from posts.application.dto.post import CreatedPost, CreatePost
+from posts.application.dto.post import CreatedPostDTO, CreatePostDTO, PostImageDTO
 
 router = APIRouter(prefix="/posts")
 
@@ -19,28 +20,17 @@ async def create_post(
     data: Annotated[CreatePostForm, Form(...)],
     user: Annotated[UserDTO, Depends(validate_token)],
     handler: FromDI[CreatePostHandler],
-) -> CreatedPost:
-    images_bytes = [await image.read() for image in data.images]
-    post = CreatePost(
+) -> CreatedPostDTO:
+    post = CreatePostDTO(
         title=data.title,
         content=data.content,
-        images=images_bytes,
-        author_id=user.id,
-    )
-
-
-@router.get("")
-@inject
-async def get_posts(
-    user: Annotated[UserDTO, Depends(validate_token)],
-    filters: Annotated[GetPostFiltersSchema, Query(...)],
-    handler: FromDI[GetPostsHandler],
-) -> Post:
-    images_bytes = [await image.read() for image in data.images]
-    post = CreatePost(
-        title=data.title,
-        content=data.content,
-        images=images_bytes,
+        images=[
+            PostImageDTO(
+                content=(await image.read()),
+                filename=(image.filename or str(uuid4())),
+            )
+            for image in data.images
+        ],
         author_id=user.id,
     )
     return await handler.call(post)

@@ -1,4 +1,4 @@
-.PHONY: json dev back migrate migrations
+.PHONY: json dev back migrate migrations draft
 
 
 json:
@@ -13,10 +13,13 @@ back:
 
 # make migrations m='name'
 migrations:
-	cd backend/src && uv run alembic -c setup/db/alembic.ini revision --autogenerate -m $(m)
+	cd backend/src && uv run alembic -c setup/db/alembic.ini revision --autogenerate -m '$(m)'
 
 migrate: 
 	cd backend/src && uv run alembic -c setup/db/alembic.ini upgrade head 
 
 downgrade: 
 	cd backend/src && uv run alembic -c setup/db/alembic.ini downgrade head -1
+
+draft:
+	cd backend/src && uv run python draft.py

@@ -3,10 +3,13 @@ from pathlib import Path
 
 from pydantic_settings import BaseSettings
 
-BASE_DIR = Path(__file__).parent.parent
-
 
 class Settings(BaseSettings):
+    BASE_DIR: Path = Path(__file__).parent  # src folder
+
+    # FileStore
+    FILE_STORE_DIR: Path = Path(__file__).parent / "filestore" / "files"
+
     # DB
     DB_URL: str = "sqlite:///some.db"
     ASYNC_DB_URL: str = "sqlite+aiosqlite:///some.db"

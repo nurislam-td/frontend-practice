@@ -2,13 +2,19 @@ from dataclasses import dataclass
 
 
 @dataclass(slots=True, frozen=True)
-class CreatePost:
+class PostImageDTO:
+    filename: str
+    content: bytes
+
+
+@dataclass(slots=True, frozen=True)
+class CreatePostDTO:
     title: str
     content: str
-    images: list[bytes]
+    images: list[PostImageDTO]
     author_id: int
 
 
 @dataclass(slots=True, frozen=True)
-class CreatedPost:
+class CreatedPostDTO:
     id: int

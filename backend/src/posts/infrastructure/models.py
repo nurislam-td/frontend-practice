@@ -18,6 +18,7 @@ class Post(Base):
 class PostImage(Base):
     __tablename__ = "post_image"
 
+    origin_name: Mapped[str]
     path: Mapped[str] = mapped_column(unique=True)
     post_id: Mapped[int | None] = mapped_column(
         ForeignKey("post.id", ondelete="SET NULL")
