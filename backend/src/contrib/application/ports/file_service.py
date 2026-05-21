@@ -1,0 +1,7 @@
+import io
+from typing import Protocol
+
+
+class IFileService(Protocol):
+    async def upload_file(self, file: io.BytesIO, rel_file_path: str) -> None: ...
+    async def download_file(self, rel_file_path: str) -> io.BytesIO: ...

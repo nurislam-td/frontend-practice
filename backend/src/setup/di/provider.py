@@ -1,15 +1,5 @@
 from collections.abc import AsyncIterable
 
-from dishka import (  # type: ignore  # noqa: PGH003
-    AnyOf,
-    Provider,
-    Scope,
-    from_context,
-    provide,
-)
-from settings import Settings
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
-
 from auth.application.login import LoginHandler
 from auth.application.ports import (
     IJwtService,
@@ -21,6 +11,20 @@ from auth.application.signup import SignUpHandler
 from auth.infrastructure.adapters.jwt import JwtService
 from auth.infrastructure.adapters.pwd import PasswordService
 from auth.infrastructure.adapters.user import UserService
+from contrib.application.ports.file_service import IFileService
+from contrib.infrastructure.file_service import FileStoreService
+from dishka import (  # type: ignore  # noqa: PGH003
+    AnyOf,
+    Provider,
+    Scope,
+    from_context,
+    provide,
+)
+from posts.application.create_post import CreatePostHandler
+from posts.application.ports import IPostService
+from posts.infrastructure.adapters.post_service import PostService
+from settings import Settings
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 
 class AppProvider(Provider):
@@ -54,3 +58,7 @@ class AppProvider(Provider):
     enc_pwd = provide(PasswordService, provides=IPasswordService, scope=Scope.REQUEST)
     su = provide(SignUpHandler, scope=Scope.REQUEST)
     lh = provide(LoginHandler, scope=Scope.REQUEST)
+
+    ps = provide(PostService, provides=IPostService, scope=Scope.REQUEST)
+    fs = provide(FileStoreService, provides=IFileService, scope=Scope.REQUEST)
+    cp = provide(CreatePostHandler, scope=Scope.REQUEST)
