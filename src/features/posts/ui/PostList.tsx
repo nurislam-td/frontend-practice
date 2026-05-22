@@ -1,5 +1,5 @@
 import { usePostQueryTs } from "@/features/posts/hooks/usePosts";
-import { PostCard } from "@/features/posts/ui/PostCard";
+import { PostCard } from "@/features/posts/ui/components/PostCard";
 
 export function PostList() {
   const { posts, isLoading, error } = usePostQueryTs();

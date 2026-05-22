@@ -1,10 +1,12 @@
 .PHONY: json dev back migrate migrations draft
 
+sync:
+	pnpm install && cd backend && uv sync 
 
 json:
 	pnpm json-server --watch db.json --port 8000
 
-dev:
+front:
 	pnpm dev
 
 # Backend scripts

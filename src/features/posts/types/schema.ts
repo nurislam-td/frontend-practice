@@ -9,3 +9,11 @@ export const postSchema = z.object({
 });
 
 export type PostSchemaValues = z.infer<typeof postSchema>;
+
+export const postFormInputSchema = z.object({
+  title: z.string().min(3, "Min 3 symbols").max(100, "Max 100 symbol"),
+  content: z.string().min(10, "Min 10 symbols"),
+  images: z.array(z.instanceof(File)),
+});
+
+export type PostFormInputSchemaValues = z.infer<typeof postFormInputSchema>;

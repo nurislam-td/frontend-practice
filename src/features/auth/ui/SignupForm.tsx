@@ -12,8 +12,8 @@ import {
 import {
   signupSchema,
   type SignUpSchemaValues,
-} from "@/features/auth/types/schema";
-import { useSignUp } from "@/features/auth/hooks/useAuth";
+} from "@/features/auth/ui/types/schema";
+import { useSignUp } from "@/features/auth/ui/hooks/useAuth";
 
 const defaultValues: SignUpSchemaValues = {
   email: "",
@@ -26,9 +26,9 @@ const defaultValues: SignUpSchemaValues = {
 };
 
 export const SignUpForm = () => {
-  const mutation = useSignUp();
-  const onSubmit: SubmitHandler<SignUpSchemaValues> = (data) => {
-    mutation.mutate(data);
+  const { signupUseCase } = useSignUp();
+  const onSubmit: SubmitHandler<SignUpSchemaValues> = async (data) => {
+    await signupUseCase(data);
   };
 
   const {

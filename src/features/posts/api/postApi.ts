@@ -7,6 +7,12 @@ export const postApi = {
   },
 
   async createPost(createPost: CreatePost): Promise<void> {
-    api.post<void>("/posts", createPost);
+    const formData = new FormData();
+    const toStrFields = ["title", "content"] as const;
+    toStrFields.forEach((field) =>
+      formData.append(field, String(createPost[field])),
+    );
+    createPost.images.forEach((image) => formData.append("images", image));
+    api.post<void>("/posts", formData);
   },
 };

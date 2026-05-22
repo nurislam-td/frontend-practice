@@ -1,13 +1,13 @@
 import type { Post } from "@/features/posts/types/std";
 import { Card, Group, Text, Image, Avatar } from "@mantine/core";
 
-export function PostCard({ post }: { post: Post }) {
+type PostCardProps = {
+  post: Post;
+};
+
+export function PostCard({ post }: PostCardProps) {
   return (
     <Card shadow="sm" padding={"lg"} radius={"xl"} withBorder>
-      <Card.Section>
-        <Image height={180} alt={post.title} src={post.image} />
-      </Card.Section>
-
       <Group mt={"md"} mb={"xs"}>
         <Text fw={600}>{post.title}</Text>
       </Group>
@@ -17,8 +17,10 @@ export function PostCard({ post }: { post: Post }) {
       </Text>
 
       <Group mt={"lg"}>
-        <Avatar radius={"xl"} src={post.avatar} />
-        <Text size="sm">{post.author}</Text>
+        <Avatar radius={"xl"} src={post.author.avatar} />
+        <Text size="sm">
+          {post.author.first_name + " " + post.author.last_name}
+        </Text>
       </Group>
     </Card>
   );

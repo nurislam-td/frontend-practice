@@ -10,3 +10,8 @@ export type SignUp = {
 export type UserId = {
   user_id: number;
 };
+
+export type JWTPair = {
+  access_token: string;
+  refresh_token: string;
+};
