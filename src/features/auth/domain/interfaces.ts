@@ -1,4 +1,9 @@
-import { type JWTPair, type SignUp } from "@/features/auth/use-cases/model";
+import {
+  type Login,
+  type JWTPair,
+  type SignUp,
+} from "@/features/auth/domain/model";
+
 export interface ITokenStorage {
   getAccessToken(): string | null;
   setAccessToken(token: string): void;
@@ -11,4 +16,5 @@ export interface ITokenStorage {
 
 export interface IAuthAPI {
   signup(dto: SignUp): Promise<JWTPair>;
+  login(dto: Login): Promise<JWTPair>;
 }

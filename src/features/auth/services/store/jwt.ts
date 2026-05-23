@@ -1,6 +1,6 @@
 import { BaseWebStorage } from "@/shared/lib/stores/browser";
-import type { JWTPair } from "@/features/auth/use-cases/model";
-import type { ITokenStorage } from "@/features/auth/use-cases/interfaces";
+import type { JWTPair } from "@/features/auth/domain/model";
+import type { ITokenStorage } from "@/features/auth/domain/interfaces";
 
 class TokenStorage extends BaseWebStorage implements ITokenStorage {
   getAccessToken(): string | null {

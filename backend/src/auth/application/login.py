@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from auth.application.dto.jwt import JwtDTO
+from auth.application.dto.jwt import JwtDTO, UserPayload
 from auth.application.ports import IJwtService, IPasswordService, IUserService
 
 
@@ -18,4 +18,4 @@ class LoginHandler:
         if not self.pwd.check_pwd(password, user.password):
             raise Exception("Incorrect password")
 
-        return await self.jwt_repo.get_by_user_id(user.id)
+        return self.jwt_repo.create_user_tokens(UserPayload(user.id))

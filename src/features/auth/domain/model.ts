@@ -7,6 +7,11 @@ export type SignUp = {
   age?: number | null | undefined;
 };
 
+export type Login = {
+  email: string;
+  password: string;
+};
+
 export type UserId = {
   user_id: number;
 };

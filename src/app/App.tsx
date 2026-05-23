@@ -1,3 +1,4 @@
+import { LoginPage } from "@/pages/LoginPage";
 import { PostPage } from "@/pages/PostPage";
 import { SignUpPage } from "@/pages/SignUpPage";
 import { MantineProvider } from "@mantine/core";
@@ -15,6 +16,7 @@ function App() {
             <Routes>
               <Route path="/posts" element={<PostPage />} />
               <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/login" element={<LoginPage />} />
               <Route path="/" element={<div>Test</div>} />
             </Routes>
           </BrowserRouter>

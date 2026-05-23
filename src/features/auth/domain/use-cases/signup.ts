@@ -1,8 +1,8 @@
-import type { JWTPair, SignUp } from "@/features/auth/use-cases/model";
+import type { JWTPair, SignUp } from "@/features/auth/domain/model";
 import type {
   IAuthAPI,
   ITokenStorage,
-} from "@/features/auth/use-cases/interfaces";
+} from "@/features/auth/domain/interfaces";
 
 export type SignUpUseCase = (data: SignUp) => Promise<JWTPair>;
 

@@ -9,7 +9,7 @@ from contrib.application.ports.file_service import IFileService
 
 @dataclass(slots=True)
 class FileStoreService(IFileService):
-    _store_dir: Path = field(default=Path(get_settings().FILE_STORE_DIR))
+    _store_dir: Path = field(init=False, default=Path(get_settings().FILE_STORE_DIR))
 
     async def upload_file(self, file: BytesIO, rel_file_path: str):
         await Path(self._store_dir / rel_file_path).write_bytes(file.read())

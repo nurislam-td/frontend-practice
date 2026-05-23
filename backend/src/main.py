@@ -4,7 +4,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from setup.di.ioc import get_ioc
 
-app = FastAPI()
+app = FastAPI(
+    docs_url="/api/docs",
+)
 app.include_router(auth_api)
 
 setup_dishka(get_ioc(), app)

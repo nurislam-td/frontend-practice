@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-from adaptix.conversion import get_converter
+from adaptix.conversion import coercer, get_converter
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from auth.application.dto.user import CreateUserDTO, UserDTO
+from auth.application.dto.user import CreateUserDTO, Gender, UserDTO
 from auth.application.ports import IPasswordService, IUserService
 from auth.infrastructure.models import User
 
@@ -15,8 +15,12 @@ class UserService(IUserService):
 
     async def get_user_by_email(self, email: str) -> UserDTO:
         q = select(User).where(User.email == email)
-        u = (await self.session.execute(q)).scalar_one()
-        return get_converter(User, UserDTO)(u)
+        u = (await self.session.execute(q)).scalar_one_or_none()
+        if u is None:
+            raise Exception("No user")
+        return get_converter(
+            User, UserDTO, recipe=[coercer(str, Gender, lambda x: Gender(x))]
+        )(u)
 
     async def get_user_by_id(self, user_id: int) -> UserDTO:
         q = select(User).where(User.id == user_id)
