@@ -88,6 +88,7 @@ function setupResponseInterceptors(api: AxiosInstance) {
       } catch {
         processQueue(error, null);
         tokenStorage.clear();
+        window.location.href = "/login";
         return Promise.reject(normalizeError(error));
       } finally {
         isRefreshing = false;
