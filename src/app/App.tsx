@@ -6,7 +6,7 @@ import { ProtectedRoute } from "@/shared/ui/ProtectedRoute";
 import { MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 const queryClient = new QueryClient();
 function App() {
@@ -26,7 +26,10 @@ function App() {
               />
               <Route path={routes.signup} element={<SignUpPage />} />
               <Route path={routes.login} element={<LoginPage />} />
-              <Route path="/" element={<div>Test</div>} />
+              <Route
+                path="/"
+                element={<Navigate to={routes.posts} replace />}
+              />
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>

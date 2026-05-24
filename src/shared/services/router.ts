@@ -1,5 +1,5 @@
 import { useNavigate, type NavigateFunction } from "react-router-dom";
-import type { IRouter } from "../../domain/interfaces";
+import type { IRouter } from "../domain/interfaces";
 
 export const routes = {
   posts: "/posts",
