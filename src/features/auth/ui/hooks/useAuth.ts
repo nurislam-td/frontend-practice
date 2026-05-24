@@ -12,6 +12,7 @@ import {
   loginUseCaseFactory,
   type LoginUseCase,
 } from "@/features/auth/domain/use-cases/login";
+import { useRouter } from "@/shared/lib/router";
 
 const useAuthApi = (): IAuthAPI => {
   const signupMutation = useMutation({
@@ -32,6 +33,10 @@ export const useSignUp = (): { signupUseCase: SignUpUseCase } => {
 };
 
 export const useLogin = (): { loginUseCase: LoginUseCase } => {
-  const loginUseCase = loginUseCaseFactory(tokenStorage, useAuthApi());
+  const loginUseCase = loginUseCaseFactory(
+    tokenStorage,
+    useAuthApi(),
+    useRouter(),
+  );
   return { loginUseCase };
 };
