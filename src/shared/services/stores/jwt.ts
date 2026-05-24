@@ -3,6 +3,7 @@ import type { JWTPair } from "@/features/auth/domain/model";
 import type { ITokenStorage } from "@/features/auth/domain/interfaces";
 
 class TokenStorage extends BaseWebStorage implements ITokenStorage {
+  //TODO use Runtime Memory not web localStorage
   getAccessToken(): string | null {
     return this.get("access_token");
   }
@@ -26,6 +27,11 @@ class TokenStorage extends BaseWebStorage implements ITokenStorage {
       access_token: this.get("access_token") ?? "",
       refresh_token: this.get("refresh_token") ?? "",
     };
+  }
+
+  clear(): void {
+    this.remove("access_token");
+    this.remove("refresh_token");
   }
 }
 

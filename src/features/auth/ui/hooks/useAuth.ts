@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { authApiClient } from "@/features/auth/services/api/authApi";
-import { tokenStorage } from "@/features/auth/services/store/jwt";
+import { tokenStorage } from "@/shared/services/stores/jwt";
 
 import type { IAuthAPI } from "@/features/auth/domain/interfaces";
 import {
@@ -12,7 +12,7 @@ import {
   loginUseCaseFactory,
   type LoginUseCase,
 } from "@/features/auth/domain/use-cases/login";
-import { useRouter } from "@/shared/lib/router";
+import { useRouter } from "@/shared/services/router";
 
 const useAuthApi = (): IAuthAPI => {
   const signupMutation = useMutation({

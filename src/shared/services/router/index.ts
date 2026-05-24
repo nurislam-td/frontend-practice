@@ -1,9 +1,11 @@
 import { useNavigate, type NavigateFunction } from "react-router-dom";
-import type { IRouter } from "../domain/interfaces";
+import type { IRouter } from "../../domain/interfaces";
 
 export const routes = {
   posts: "/posts",
-};
+  login: "/login",
+  signup: "/signup",
+} as const;
 
 class ReactRouter implements IRouter {
   private navigate: NavigateFunction;

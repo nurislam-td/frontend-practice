@@ -8,9 +8,10 @@ import type {
   ApiError,
   JwtResponse,
   RequestPromiseHandlers,
-} from "@/shared/lib/api/types";
+} from "@/shared/services/api/types";
 import axios from "axios";
-import { API_URL } from "@/shared/lib/api/http";
+import { API_URL } from "@/shared/services/api/http";
+import { tokenStorage } from "@/shared/services/stores/jwt";
 
 function normalizeError(error: AxiosError): ApiError {
   if (error.response && error.response.data) {
@@ -73,20 +74,20 @@ function setupResponseInterceptors(api: AxiosInstance) {
       isRefreshing = true;
 
       try {
-        const refresh_token = localStorage.getItem("refresh_token");
+        const refresh_token = tokenStorage.getRefreshToken();
         const { data } = await axios.post<JwtResponse>(`${API_URL}/api/auth`, {
           refresh_token,
         }); // TODO withCredentials : true
 
-        localStorage.setItem("access_token", data.access_token); // TODO use runtime memory (store or etc.)
-        localStorage.setItem("refresh_token", data.refresh_token); // TODO use HTTP-ONLY cookies
+        tokenStorage.setAccessToken(data.access_token);
+        tokenStorage.setRefreshToken(data.refresh_token);
+
         originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
         api.request(originalRequest);
         processQueue(null, data.access_token);
       } catch {
         processQueue(error, null);
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
+        tokenStorage.clear();
         return Promise.reject(normalizeError(error));
       } finally {
         isRefreshing = false;
@@ -99,7 +100,7 @@ function setupResponseInterceptors(api: AxiosInstance) {
 
 export function setupInterceptors(api: AxiosInstance): void {
   api.interceptors.request.use((config) => {
-    const token: string | null = localStorage.getItem("access_token");
+    const token: string | null = tokenStorage.getAccessToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

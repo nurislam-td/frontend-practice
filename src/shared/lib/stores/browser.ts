@@ -34,8 +34,4 @@ export abstract class BaseWebStorage {
   protected remove(key: string): void {
     this.storage.removeItem(key);
   }
-
-  protected clear(): void {
-    this.storage.clear();
-  }
 }

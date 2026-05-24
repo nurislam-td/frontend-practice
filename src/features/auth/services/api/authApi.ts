@@ -1,4 +1,4 @@
-import { api } from "@/shared/lib/api/http";
+import { api } from "@/shared/services/api/http";
 import {
   type SignUp,
   type JWTPair,
