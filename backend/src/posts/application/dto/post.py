@@ -25,7 +25,6 @@ class PostImageDTO:
     id: int
     filename: str
     path: str
-    content: bytes
 
 
 @dataclass(slots=True, frozen=True)
