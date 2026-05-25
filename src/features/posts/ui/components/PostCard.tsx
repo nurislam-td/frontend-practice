@@ -1,5 +1,5 @@
-import type { Post } from "@/features/posts/types/std";
-import { Card, Group, Text, Image, Avatar } from "@mantine/core";
+import type { Post } from "@/features/posts/domain/model";
+import { Card, Group, Text, Avatar } from "@mantine/core";
 
 type PostCardProps = {
   post: Post;
@@ -13,7 +13,9 @@ export function PostCard({ post }: PostCardProps) {
       </Group>
 
       <Text size="sm" c={"dimmed"}>
-        {post.content}
+        {post.content.length > 100
+          ? `${post.content.substring(0, 100)}...`
+          : post.content}
       </Text>
 
       <Group mt={"lg"}>

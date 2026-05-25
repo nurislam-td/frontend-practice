@@ -20,7 +20,7 @@ import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import {
   postFormInputSchema,
   type PostFormInputSchemaValues,
-} from "@/features/posts/types/schema";
+} from "@/features/posts/ui/types/schema";
 
 type Props = {
   onSubmit: SubmitHandler<PostFormInputSchemaValues>;

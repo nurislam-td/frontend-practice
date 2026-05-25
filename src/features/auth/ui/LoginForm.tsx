@@ -1,12 +1,23 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
+import {
+  Flex,
+  Button,
+  PasswordInput,
+  Stack,
+  TextInput,
+  Anchor,
+  Text,
+  Divider,
+} from "@mantine/core";
 
 import {
   loginSchema,
   type LoginSchemaValues,
 } from "@/features/auth/ui/types/schema";
 import { useLogin } from "@/features/auth/ui/hooks/useAuth";
+import { Link } from "react-router-dom";
+import { routes } from "@/shared/services/router";
 
 const defaultValues: LoginSchemaValues = {
   email: "",
@@ -37,7 +48,6 @@ export const LoginForm = () => {
           {...register("email")}
           error={errors.email?.message}
         />
-
         <PasswordInput
           label="Password"
           placeholder="Your password"
@@ -47,6 +57,13 @@ export const LoginForm = () => {
         <Button type="submit" loading={isSubmitting}>
           Login
         </Button>
+        <Divider label="or" labelPosition="center" />
+        <Text ta="center" size="sm" c="dimmed">
+          Don&apos;t have an account?{" "}
+          <Anchor component={Link} to={routes.signup}>
+            Sign up
+          </Anchor>
+        </Text>
       </Stack>
     </form>
   );
