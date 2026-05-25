@@ -1,5 +1,12 @@
+from typing import Annotated
+
+from fastapi.params import Query
 from pydantic import BaseModel
 
 
+class PaginationParamsSchema(BaseModel):
+    limit: Annotated[int, Query(...)]
+    offset: Annotated[int, Query(...)]
 
-class PaginationParam
+
+PaginationParamsSchemaType = Annotated[PaginationParamsSchema, Query(...)]
