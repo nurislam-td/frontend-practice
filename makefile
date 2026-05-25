@@ -25,3 +25,8 @@ downgrade:
 
 draft:
 	cd backend/src && uv run python draft.py
+
+
+
+rsa_keys:
+	cd backend && uv run python gen_rsa_keys.py
