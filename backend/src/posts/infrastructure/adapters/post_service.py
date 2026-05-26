@@ -3,12 +3,19 @@ from dataclasses import dataclass
 from uuid import uuid4
 
 from anyio import Path
+from contrib.application.dto import PaginatedDTO, PaginationParams
 from contrib.application.ports.file_service import IFileService
-from settings import get_settings
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload, selectinload
 
-from posts.application.dto.post import CreatedPostDTO, CreatePostDTO
+from posts.application.dto.post import (
+    CreatedPostDTO,
+    CreatePostDTO,
+    PostDTO,
+)
 from posts.application.ports import IPostService
+from posts.infrastructure.converters import convert_posts
 from posts.infrastructure.models import Post, PostImage
 
 
@@ -26,12 +33,13 @@ class PostService(IPostService):
         self._session.add(post_db)
         await self._session.flush()
         db_image_buffer: list[PostImage] = [None for i in range(len(post.images))]  # type: ignore
+
         for i, image in enumerate(post.images):
             db_p = (
                 Path("posts")
                 / str(post_db.id)
                 / "images"
-                / f"{image.filename}_{uuid4()}"
+                / f"{Path(image.filename).stem}_{uuid4()}{Path(image.filename).suffix}"
             )
             await self._file_storage.upload_file(
                 file=io.BytesIO(image.content),
@@ -44,3 +52,17 @@ class PostService(IPostService):
             )
         self._session.add_all(db_image_buffer)
         return CreatedPostDTO(id=post_db.id)
+
+    async def list(self, pagination: PaginationParams) -> PaginatedDTO[PostDTO]:
+        q = (
+            select(Post)
+            .options(
+                joinedload(Post.author),
+                selectinload(Post.images),
+            )
+            .limit(pagination.limit)
+            .offset(pagination.offset)
+        )
+        posts = await self._session.scalars(q)
+        data = [convert_posts(p) for p in posts]
+        return PaginatedDTO(limit=pagination.limit, offset=pagination.offset, data=data)

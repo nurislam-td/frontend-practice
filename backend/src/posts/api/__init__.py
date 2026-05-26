@@ -3,34 +3,66 @@ from uuid import uuid4
 
 from auth.api.depends import validate_token
 from auth.application.dto.user import UserDTO
+from contrib.application.dto import PaginatedDTO
+from contrib.infrastructure.converters import pagination_converter
+from contrib.infrastructure.schemas import PaginationParamsSchemaType
 from dishka.integrations.fastapi import FromDishka as FromDI
 from dishka.integrations.fastapi import inject
-from fastapi import APIRouter, Depends, Form
+from fastapi import APIRouter, Depends, File, Form, UploadFile
 
-from posts.api.schema import CreatePostForm
-from posts.application.create_post import CreatePostHandler
-from posts.application.dto.post import CreatedPostDTO, CreatePostDTO, CreatePostImageDTO
+from posts.application.dto.post import (
+    CreatedPostDTO,
+    CreatePostDTO,
+    CreatePostImageDTO,
+    PostDTO,
+)
+from posts.application.use_cases.create_post import CreatePostHandler
+from posts.application.use_cases.get_posts import GetPostsHandler
 
 router = APIRouter(prefix="/posts")
 
 
-@router.post("")
+@router.post(
+    "",
+    openapi_extra={
+        "requestBody": {
+            "content": {
+                "multipart/form-data": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "title": {"type": "string"},
+                            "content": {"type": "string"},
+                            "images": {
+                                "type": "array",
+                                "items": {"type": "string", "format": "binary"},
+                            },
+                        },
+                        "required": ["title", "content", "images"],
+                    }
+                }
+            }
+        }
+    },
+)
 @inject
 async def create_post(
-    data: Annotated[CreatePostForm, Form(...)],
     user: Annotated[UserDTO, Depends(validate_token)],
     handler: FromDI[CreatePostHandler],
+    title: Annotated[str, Form()],
+    content: Annotated[str, Form()],
+    images: Annotated[list[UploadFile], File()],
 ) -> CreatedPostDTO:
-    images = [
+    images_dto = [
         CreatePostImageDTO(
             content=(await image.read()), filename=(image.filename or str(uuid4()))
         )
-        for image in data.images
+        for image in images
     ]
     post = CreatePostDTO(
-        title=data.title,
-        content=data.content,
-        images=images,
+        title=title,
+        content=content,
+        images=images_dto,
         author_id=user.id,
     )
     return await handler.call(post)
@@ -38,5 +70,7 @@ async def create_post(
 
 @router.get("")
 @inject
-async def get_posts() -> None:
-    pass
+async def get_posts(
+    pagination: PaginationParamsSchemaType, handler: FromDI[GetPostsHandler]
+) -> PaginatedDTO[PostDTO]:
+    return await handler.call(pagination_converter(pagination))

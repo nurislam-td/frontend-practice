@@ -20,8 +20,9 @@ from dishka import (  # type: ignore  # noqa: PGH003
     from_context,
     provide,
 )
-from posts.application.create_post import CreatePostHandler
 from posts.application.ports import IPostService
+from posts.application.use_cases.create_post import CreatePostHandler
+from posts.application.use_cases.get_posts import GetPostsHandler
 from posts.infrastructure.adapters.post_service import PostService
 from settings import Settings
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
@@ -62,3 +63,4 @@ class AppProvider(Provider):
     ps = provide(PostService, provides=IPostService, scope=Scope.REQUEST)
     fs = provide(FileStoreService, provides=IFileService, scope=Scope.REQUEST)
     cp = provide(CreatePostHandler, scope=Scope.REQUEST)
+    gp = provide(GetPostsHandler, scope=Scope.REQUEST)

@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from auth.application.dto.user import CreateUserDTO, Gender, UserDTO
 from auth.application.ports import IPasswordService, IUserService
+from auth.infrastructure.converters import user_converter
 from auth.infrastructure.models import User
 
 
@@ -18,19 +19,17 @@ class UserService(IUserService):
         u = (await self.session.execute(q)).scalar_one_or_none()
         if u is None:
             raise Exception("No user")
-        return get_converter(
-            User, UserDTO, recipe=[coercer(str, Gender, lambda x: Gender(x))]
-        )(u)
+        return user_converter(u)
 
     async def get_user_by_id(self, user_id: int) -> UserDTO:
         q = select(User).where(User.id == user_id)
         u = (await self.session.execute(q)).scalar_one()
-        return get_converter(User, UserDTO)(u)
+        return user_converter(u)
 
     async def get_maybe_user_by_id(self, user_id: int) -> UserDTO | None:
         q = select(User).where(User.id == user_id)
         u = (await self.session.execute(q)).scalar_one_or_none()
-        return get_converter(User, UserDTO)(u) if u else u
+        return user_converter(u) if u else u
 
     async def check_user_email_exists(self, email: str) -> bool:
         q = select(User.id).where(User.email == email)

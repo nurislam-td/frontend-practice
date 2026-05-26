@@ -28,7 +28,7 @@ dist-ssr
 backend/src/crypt
 backend/src/some.db
 backend/src/.env
-
+backend/src/filestore/files
 
 
 

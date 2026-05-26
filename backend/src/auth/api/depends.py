@@ -2,18 +2,19 @@ from typing import Annotated
 
 from dishka import Scope
 from fastapi import Depends
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from setup.di.ioc import get_ioc
 
 from auth.application.dto.user import UserDTO
 from auth.application.ports import IJwtService, IUserService
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+security = HTTPBearer()
 
 
 async def get_current_token(
-    token: Annotated[str, Depends(oauth2_scheme)],
+    auth: HTTPAuthorizationCredentials = Depends(security),
 ) -> str:
+    token = auth.credentials
     return token
 
 

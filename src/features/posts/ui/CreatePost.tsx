@@ -1,8 +1,8 @@
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import type { PostFormInputSchemaValues } from "@/features/posts/types/schema";
+import type { PostFormInputSchemaValues } from "@/features/posts/ui/types/schema";
 import { PostForm } from "@/features/posts/ui/components/PostForm";
-import { usePostCreate } from "@/features/posts/hooks/usePosts";
+import { usePostCreate } from "@/features/posts/ui/hooks/usePosts";
 
 export const CreatePost = () => {
   const createMutation = usePostCreate();
