@@ -26,9 +26,9 @@ const defaultValues: SignUpSchemaValues = {
 };
 
 export const SignUpForm = () => {
-  const { signupUseCase } = useSignUp();
+  const mutation = useSignUp();
   const onSubmit: SubmitHandler<SignUpSchemaValues> = async (data) => {
-    await signupUseCase(data);
+    await mutation.mutateAsync(data);
   };
 
   const {

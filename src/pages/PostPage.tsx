@@ -9,7 +9,7 @@ export function PostPage() {
         <Group justify="center">
           <CreatePost />
         </Group>
-        <SimpleGrid cols={{ base: 3 }}>
+        <SimpleGrid cols={{ base: 1 }}>
           <PostList />
         </SimpleGrid>
       </Stack>

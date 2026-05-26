@@ -1,42 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { authApiClient } from "@/features/auth/services/api/authApi";
-import { tokenStorage } from "@/shared/services/stores/jwt";
+import { useAuthDI } from "./useAuthDI";
 
-import type { IAuthAPI } from "@/features/auth/domain/interfaces";
-import {
-  signUpUseCaseFactory,
-  type SignUpUseCase,
-} from "@/features/auth/domain/use-cases/signup";
-import {
-  loginUseCaseFactory,
-  type LoginUseCase,
-} from "@/features/auth/domain/use-cases/login";
-import { useRouter } from "@/shared/services/router";
-
-const useAuthApi = (): IAuthAPI => {
-  const signupMutation = useMutation({
-    mutationFn: authApiClient.signup,
+export const useSignUp = () => {
+  const { signUpUseCase } = useAuthDI();
+  return useMutation({
+    mutationFn: signUpUseCase,
   });
-  const loginMutation = useMutation({
-    mutationFn: authApiClient.login,
-  });
-  return {
-    signup: signupMutation.mutateAsync,
-    login: loginMutation.mutateAsync,
-  };
 };
 
-export const useSignUp = (): { signupUseCase: SignUpUseCase } => {
-  const signupUseCase = signUpUseCaseFactory(tokenStorage, useAuthApi());
-  return { signupUseCase };
-};
-
-export const useLogin = (): { loginUseCase: LoginUseCase } => {
-  const loginUseCase = loginUseCaseFactory(
-    tokenStorage,
-    useAuthApi(),
-    useRouter(),
-  );
-  return { loginUseCase };
+export const useLogin = () => {
+  const { loginUseCase } = useAuthDI();
+  return useMutation({
+    mutationFn: loginUseCase,
+  });
 };

@@ -25,9 +25,9 @@ const defaultValues: LoginSchemaValues = {
 };
 
 export const LoginForm = () => {
-  const { loginUseCase } = useLogin();
+  const mutation = useLogin();
   const onSubmit: SubmitHandler<LoginSchemaValues> = async (data) => {
-    await loginUseCase(data);
+    await mutation.mutateAsync(data);
   };
 
   const {
