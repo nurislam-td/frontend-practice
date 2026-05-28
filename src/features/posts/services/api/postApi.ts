@@ -22,4 +22,8 @@ export const postApi = {
       .post<{ id: number }>("/posts", formData)
       .then((result) => result.data);
   },
+
+  async getPost(postId: number | string): Promise<Post> {
+    return api.get<Post>(`/posts/${postId}`).then((result) => result.data);
+  },
 };

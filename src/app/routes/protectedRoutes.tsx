@@ -1,7 +1,8 @@
 import type { RouteObject } from "react-router-dom";
 import { ProtectedLayout } from "../layouts/ProtectedLayout";
 import { routes } from "@/shared/services/router";
-import { PostPage } from "@/pages/PostPage";
+import { PostPage } from "@/pages/posts/PostPage";
+import { PostDetailPage } from "@/pages/posts/PostDetailPage";
 
 export const protectedRoutes: RouteObject = {
   element: <ProtectedLayout />,
@@ -9,6 +10,10 @@ export const protectedRoutes: RouteObject = {
     {
       path: routes.posts,
       element: <PostPage />,
+    },
+    {
+      path: routes.postDetail(":postId"),
+      element: <PostDetailPage />,
     },
   ],
 };

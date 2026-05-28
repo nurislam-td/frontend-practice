@@ -6,6 +6,10 @@ export const routes = {
   posts: "/posts",
   login: "/login",
   signup: "/signup",
+
+  postDetail(postId: number | string) {
+    return `/posts/${postId}`;
+  },
 } as const;
 
 export const useRouter = (): IRouter => {

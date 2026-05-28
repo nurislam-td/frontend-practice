@@ -22,6 +22,7 @@ from dishka import (  # type: ignore  # noqa: PGH003
 )
 from posts.application.ports import IPostService
 from posts.application.use_cases.create_post import CreatePostHandler
+from posts.application.use_cases.get_post import GetPostDetailHandler
 from posts.application.use_cases.get_posts import GetPostsHandler
 from posts.infrastructure.adapters.post_service import PostService
 from settings import Settings
@@ -64,3 +65,4 @@ class AppProvider(Provider):
     fs = provide(FileStoreService, provides=IFileService, scope=Scope.REQUEST)
     cp = provide(CreatePostHandler, scope=Scope.REQUEST)
     gp = provide(GetPostsHandler, scope=Scope.REQUEST)
+    gpd = provide(GetPostDetailHandler, scope=Scope.REQUEST)

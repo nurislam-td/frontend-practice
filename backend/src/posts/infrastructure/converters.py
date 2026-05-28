@@ -4,7 +4,7 @@ from adaptix.conversion import get_converter, link, link_constant
 from posts.application.dto.post import PostDTO, PostImageDTO
 from posts.infrastructure.models import Post, PostImage
 
-convert_posts = get_converter(
+convert_post = get_converter(
     Post,
     PostDTO,
     recipe=[

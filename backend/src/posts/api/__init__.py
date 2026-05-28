@@ -17,9 +17,10 @@ from posts.application.dto.post import (
     PostDTO,
 )
 from posts.application.use_cases.create_post import CreatePostHandler
+from posts.application.use_cases.get_post import GetPostDetailHandler
 from posts.application.use_cases.get_posts import GetPostsHandler
 
-router = APIRouter(prefix="/posts")
+router = APIRouter(prefix="/posts", tags=["Posts"])
 
 
 @router.post(
@@ -53,6 +54,7 @@ async def create_post(
     content: Annotated[str, Form()],
     images: Annotated[list[UploadFile], File()],
 ) -> CreatedPostDTO:
+
     images_dto = [
         CreatePostImageDTO(
             content=(await image.read()), filename=(image.filename or str(uuid4()))
@@ -74,3 +76,11 @@ async def get_posts(
     pagination: PaginationParamsSchemaType, handler: FromDI[GetPostsHandler]
 ) -> PaginatedDTO[PostDTO]:
     return await handler.call(pagination_converter(pagination))
+
+
+@router.get("/{post_id}")
+@inject
+async def get_post_detail(
+    post_id: int, handler: FromDI[GetPostDetailHandler]
+) -> PostDTO:
+    return await handler.call((post_id))

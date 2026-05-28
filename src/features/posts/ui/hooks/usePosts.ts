@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Post } from "@/features/posts/domain/model";
 import { postApi } from "@/features/posts/services/api/postApi";
 
-const POSTS_QUERY_KEY = ["posts"];
+const POSTS_QUERY_KEY = ["posts"] as const;
 
 export function usePostQueryTs(): {
   posts: Post[];
@@ -42,4 +42,16 @@ export const usePostCreate = () => {
       console.log("finally block of request ");
     },
   });
+};
+
+export const usePostDetail = (postId: number) => {
+  const {
+    data: post,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [...POSTS_QUERY_KEY, postId],
+    queryFn: () => postApi.getPost(postId),
+  });
+  return { post, isLoading, error };
 };

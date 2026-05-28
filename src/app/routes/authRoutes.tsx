@@ -1,8 +1,8 @@
 import type { RouteObject } from "react-router-dom";
 import { AuthLayout } from "../layouts/AuthLayout";
 import { routes } from "@/shared/services/router";
-import { LoginPage } from "@/pages/LoginPage";
-import { SignUpPage } from "@/pages/SignUpPage";
+import { LoginPage } from "@/pages/auth/LoginPage";
+import { SignUpPage } from "@/pages/auth/SignUpPage";
 
 export const authRoutes: RouteObject = {
   element: <AuthLayout />,

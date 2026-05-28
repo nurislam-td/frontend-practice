@@ -1,5 +1,7 @@
 import type { Post } from "@/features/posts/domain/model";
+import { routes } from "@/shared/services/router";
 import { Card, Group, Text, Avatar } from "@mantine/core";
+import { Link } from "react-router-dom";
 
 type PostCardProps = {
   post: Post;
@@ -7,7 +9,14 @@ type PostCardProps = {
 
 export function PostCard({ post }: PostCardProps) {
   return (
-    <Card shadow="sm" padding={"lg"} radius={"xl"} withBorder>
+    <Card
+      component={Link}
+      to={routes.postDetail(post.id)}
+      shadow="sm"
+      padding={"lg"}
+      radius={"xl"}
+      withBorder
+    >
       <Group mt={"md"} mb={"xs"}>
         <Text fw={600}>{post.title}</Text>
       </Group>

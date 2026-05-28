@@ -15,7 +15,7 @@ from posts.application.dto.post import (
     PostDTO,
 )
 from posts.application.ports import IPostService
-from posts.infrastructure.converters import convert_posts
+from posts.infrastructure.converters import convert_post
 from posts.infrastructure.models import Post, PostImage
 
 
@@ -64,5 +64,19 @@ class PostService(IPostService):
             .offset(pagination.offset)
         )
         posts = await self._session.scalars(q)
-        data = [convert_posts(p) for p in posts]
+        data = [convert_post(p) for p in posts]
         return PaginatedDTO(limit=pagination.limit, offset=pagination.offset, data=data)
+
+    async def get(self, post_id: int) -> PostDTO:
+        q = (
+            select(Post)
+            .options(
+                joinedload(Post.author),
+                selectinload(Post.images),
+            )
+            .where(Post.id == post_id)
+        )
+        post = await self._session.scalar(q)
+        if not post:
+            raise Exception("Post not found")
+        return convert_post(post)
