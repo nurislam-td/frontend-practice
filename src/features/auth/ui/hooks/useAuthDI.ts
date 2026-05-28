@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthDIContext } from "../providers/ioc/authDIContext";
+import { AuthDIContext } from "@/features/auth/ui/providers/ioc/authDIContext";
 
 export const useAuthDI = () => {
   const context = useContext(AuthDIContext);

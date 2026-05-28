@@ -1,5 +1,5 @@
 import type { RouteObject } from "react-router-dom";
-import { ProtectedLayout } from "../layouts/ProtectedLayout";
+import { ProtectedLayout } from "@/app/layouts/ProtectedLayout";
 import { routes } from "@/shared/services/router";
 import { PostPage } from "@/pages/posts/PostPage";
 import { PostDetailPage } from "@/pages/posts/PostDetailPage";

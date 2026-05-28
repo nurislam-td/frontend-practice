@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import type { IRouter } from "../domain/interfaces";
+import type { IRouter } from "@/shared/domain/interfaces";
 import { useMemo } from "react";
 
 export const routes = {

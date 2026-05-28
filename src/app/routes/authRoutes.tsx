@@ -1,5 +1,5 @@
 import type { RouteObject } from "react-router-dom";
-import { AuthLayout } from "../layouts/AuthLayout";
+import { AuthLayout } from "@/app/layouts/AuthLayout";
 import { routes } from "@/shared/services/router";
 import { LoginPage } from "@/pages/auth/LoginPage";
 import { SignUpPage } from "@/pages/auth/SignUpPage";
