@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-from contrib.application.dto import PaginatedDTO, PaginationParams
-
 from posts.application.dto.post import PostDTO
 from posts.application.ports import IPostService
 

@@ -1,6 +1,5 @@
 import mimetypes
 import urllib.parse
-from pathlib import Path
 from typing import Annotated
 
 from auth.api.depends import validate_token

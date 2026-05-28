@@ -1,10 +1,9 @@
 from dataclasses import dataclass
 
-from adaptix.conversion import coercer, get_converter
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from auth.application.dto.user import CreateUserDTO, Gender, UserDTO
+from auth.application.dto.user import CreateUserDTO, UserDTO
 from auth.application.ports import IPasswordService, IUserService
 from auth.infrastructure.converters import user_converter
 from auth.infrastructure.models import User
