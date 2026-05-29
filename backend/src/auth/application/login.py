@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from auth.application.dto.jwt import JwtDTO, UserPayload
+from auth.application.exceptions import IncorrectPasswordError, UserNotExistsError
 from auth.application.ports import IJwtService, IPasswordService, IUserService
 
 
@@ -14,8 +15,8 @@ class LoginHandler:
         try:
             user = await self.user_repo.get_user_by_email(email=email)
         except Exception as e:
-            raise Exception("Email not exists") from e
+            raise UserNotExistsError(email=email) from e
         if not self.pwd.check_pwd(password, user.password):
-            raise Exception("Incorrect password")
+            raise IncorrectPasswordError()
 
         return self.jwt_repo.create_user_tokens(UserPayload(user.id))

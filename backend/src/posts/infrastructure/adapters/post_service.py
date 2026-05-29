@@ -14,6 +14,7 @@ from posts.application.dto.post import (
     CreatePostDTO,
     PostDTO,
 )
+from posts.application.exceptions import PostNotFoundError
 from posts.application.ports import IPostService
 from posts.infrastructure.converters import convert_post
 from posts.infrastructure.models import Post, PostImage
@@ -78,5 +79,5 @@ class PostService(IPostService):
         )
         post = await self._session.scalar(q)
         if not post:
-            raise Exception("Post not found")
+            raise PostNotFoundError(post_id=post_id)
         return convert_post(post)

@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from auth.application.dto.user import CreateUserDTO, UserDTO
+from auth.application.exceptions import UserNotExistsError
 from auth.application.ports import IPasswordService, IUserService
 from auth.infrastructure.converters import user_converter
 from auth.infrastructure.models import User
@@ -17,7 +18,7 @@ class UserService(IUserService):
         q = select(User).where(User.email == email)
         u = (await self.session.execute(q)).scalar_one_or_none()
         if u is None:
-            raise Exception("No user")
+            raise UserNotExistsError(email=email)
         return user_converter(u)
 
     async def get_user_by_id(self, user_id: int) -> UserDTO:

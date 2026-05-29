@@ -8,23 +8,19 @@ import type {
   ApiError,
   JwtResponse,
   RequestPromiseHandlers,
+  ResponseApiError,
 } from "@/shared/services/api/types";
 import axios from "axios";
 import { API_URL } from "@/shared/services/api/http";
 import { tokenStorage } from "@/shared/services/stores/jwt";
 
 function normalizeError(error: AxiosError): ApiError {
-  if (error.response && error.response.data) {
-    const responseData = {
-      ...error.response.data,
-      statusCode: error.response.status,
-    } as ApiError;
-    return responseData;
-  }
+  const response_data = error.response?.data as ResponseApiError;
   return {
-    statusCode: 500,
-    reasonCode: "UNKNOWN_REASON",
-  };
+    reasonCode: response_data.reason_code ?? "UNKNOWN_API_ERROR",
+    statusCode: error.response?.status ?? 500,
+    message: response_data.message,
+  } as ApiError;
 }
 
 function setupResponseInterceptors(api: AxiosInstance) {
@@ -60,6 +56,7 @@ function setupResponseInterceptors(api: AxiosInstance) {
       }
       retryingRequests.add(originalRequest);
 
+      // if refresh request already sended, wait refresh token and add resolver to queue
       if (isRefreshing) {
         return new Promise<string>((resolve, reject) => {
           requestPromiseHandlersQueue.push({ resolve, reject });

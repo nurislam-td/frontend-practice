@@ -6,6 +6,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from setup.di.ioc import get_ioc
 
 from auth.application.dto.user import UserDTO
+from auth.application.exceptions import UserNotExistsError
 from auth.application.ports import IJwtService, IUserService
 
 security = HTTPBearer()
@@ -26,4 +27,4 @@ async def validate_token(token: Annotated[str, Depends(get_current_token)]) -> U
         user_id = jwt.decode_access(token).get("user_id", 0)
         if user := await user_service.get_maybe_user_by_id(user_id):
             return user
-        raise Exception("User not exists")
+        raise UserNotExistsError(id=user_id)
