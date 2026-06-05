@@ -18,3 +18,6 @@ class FileStoreService(IFileService):
 
     async def download_file(self, rel_file_path: str) -> BytesIO:
         return BytesIO(await Path(self._store_dir / rel_file_path).read_bytes())
+
+    async def delete_file(self, rel_file_path: str) -> None:
+        await Path(self._store_dir / rel_file_path).unlink(missing_ok=True)
