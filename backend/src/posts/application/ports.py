@@ -2,11 +2,17 @@ from typing import Protocol
 
 from contrib.application.dto import PaginatedDTO, PaginationParams
 
-from posts.application.dto.post import CreatedPostDTO, CreatePostDTO, PostDTO
+from posts.application.dto.post import (
+    CreatedPostDTO,
+    CreatePostDTO,
+    EditPostDTO,
+    PostDTO,
+)
 
 
 class IPostService(Protocol):
     async def create_post(self, post: CreatePostDTO) -> CreatedPostDTO: ...
+    async def update_post(self, post: EditPostDTO) -> None: ...
     async def list(
         self,
         pagination: PaginationParams,

@@ -21,6 +21,15 @@ class CreatedPostDTO:
 
 
 @dataclass(slots=True, frozen=True)
+class EditPostDTO:
+    id: int
+    author_id: int
+    title: str | None = None
+    content: str | None = None
+    images: list[CreatePostImageDTO] | None = None
+
+
+@dataclass(slots=True, frozen=True)
 class PostImageDTO:
     id: int
     filename: str
